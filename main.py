@@ -118,7 +118,7 @@ class GraphHandler:
     def visualize(self, centers=[], optimal_centers=[]):
         """Visualize the graph using NetworkX and Matplotlib."""
         # Create a layout for the nodes
-        layout = nx.spring_layout(self.graph, seed=42)
+        layout = nx.spring_layout(self.graph, seed=22)
         node_colors = []
         for node in self.graph.nodes():
             if node in centers and node in optimal_centers:
@@ -143,4 +143,4 @@ if __name__ == '__main__':
     gh = GraphHandler("edges.txt")
     centers = gh.k_centers(k=4)
     optimal_centers = gh.optimal_centers(k=4)
-    gh.visualize(centers, optimal_centers)
+    gh.visualize(centers=centers, optimal_centers=optimal_centers)
