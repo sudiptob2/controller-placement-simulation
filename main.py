@@ -21,22 +21,7 @@ class GraphHandler:
             print(f"File '{edge_file}' not found.")
         return G
 
-    def find_articulation_points(self, k):
-        """
-        Find articulation points in the graph.
-
-        Args:
-            k (int): The number of articulation points to find.
-
-        Returns:
-            list: A list of articulation points.
-        """
-        return list(nx.articulation_points(self.graph))
-
     def k_centers(self, k):
-        pass
-
-    def k_centers_avg(self, k):
         """
         Find approximate K centers in the graph.
 
@@ -84,5 +69,5 @@ class GraphHandler:
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     gh = GraphHandler("edges.txt")
-    centers = gh.k_centers_avg(k=4)
+    centers = gh.k_centers(k=4)
     gh.visualize(centers)
