@@ -19,10 +19,10 @@ class GraphMixin:
             print(f"File '{edge_file}' not found.")
         return graph
 
-    def visualize(self, centers=None, optimal_centers=None):
+    def visualize(self, centers=None, optimal_centers=None, seed=22):
         """Visualize the graph using NetworkX and Matplotlib."""
         # Create a layout for the nodes
-        layout = nx.spring_layout(self.graph, seed=22)
+        layout = nx.spring_layout(self.graph, seed=seed)
         node_colors = []
         for node in self.graph.nodes():
             if centers and optimal_centers and node in centers and node in optimal_centers:
