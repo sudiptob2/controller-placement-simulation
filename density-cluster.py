@@ -114,7 +114,7 @@ class DensityCluster(GraphMixin):
 
 
 if __name__ == '__main__':
-    density_cluster = DensityCluster("desity-cluster-bsed.txt")
+    density_cluster = DensityCluster("network2.txt")
 
     diameter = nx.diameter(density_cluster.graph)
     dc = 0.3 * diameter
