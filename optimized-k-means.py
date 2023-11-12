@@ -31,7 +31,6 @@ class KMeans(GraphMixin):
 
         random_node = random.choice(list(self.graph.nodes()))
         centers = [random_node]  # initial 1 center
-        ki = 0
         cluster = None
         for ki in range(1, k+1):
             cluster = self.k_means_partion_helper(d, centers, ki)
