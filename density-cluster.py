@@ -85,7 +85,7 @@ class DensityCluster(GraphMixin):
                     priority_queue.put([self.p[s] * -1, s])  # <priority, node>
 
             while center_count < k:
-                s, _ = priority_queue.get()
+                _, s = priority_queue.get()
                 centers.append(s)
                 center_count += 1
         return centers
@@ -125,9 +125,9 @@ if __name__ == '__main__':
 
         # this bruteforce is very slow.
         # I am using the same graph. so I precomputed the optimal centers
+        optimal_centers = pre_calculated_optimal_centers[i]
         # uncomment if you are using different graph than network1, network2
         # optimal_centers = density_cluster.optimal_centers(k=k)
-        optimal_centers = pre_calculated_optimal_centers[i]
 
         print(f"Density based clustering: Recommended K = {k}, Graph = {file_name}")
         print("-" * 25)
@@ -143,26 +143,10 @@ if __name__ == '__main__':
         print("-" * 75)
         cluster = density_cluster.make_cluster(k=k)
         # uncomment following line for visualization
-        density_cluster.visualize(centers=cluster.keys(), optimal_centers=optimal_centers, figure_title=f"Netowrk:{file_name} Algorithm: Density based clustering")
-        avg_distance = density_cluster.avg_distance_from_optimal_center(centers=cluster.keys(), optimal_centers=optimal_centers)
-        print(f"{i+1:<11}|  {avg_distance:<14}|  {str(list(cluster.keys())):<20}|  {optimal_centers}")
+        density_cluster.visualize(centers=cluster.keys(), optimal_centers=optimal_centers,
+                                  figure_title=f"Netowrk:{file_name} Algorithm: Density based clustering")
+        avg_distance = density_cluster.avg_distance_from_optimal_center(centers=cluster.keys(),
+                                                                        optimal_centers=optimal_centers)
+        print(f"{i + 1:<11}|  {avg_distance:<14}|  {str(list(cluster.keys())):<20}|  {optimal_centers}")
 
         print("\n" + "-" * 75)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
