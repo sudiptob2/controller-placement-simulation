@@ -93,7 +93,7 @@ class GraphMixin:
 
         return avg_distance / len(centers)
 
-    def visualize(self, centers=None, optimal_centers=None, seed=22):
+    def visualize(self, centers=None, optimal_centers=None, figure_title=None, seed=22):
         """Visualize the graph using NetworkX and Matplotlib."""
         # Create a layout for the nodes
         layout = nx.spring_layout(self.graph, seed=seed)
@@ -109,7 +109,19 @@ class GraphMixin:
                 node_colors.append('skyblue')
 
         # Draw the nodes and edges
-        nx.draw(self.graph, pos=layout, with_labels=True, node_size=500, node_color=node_colors, font_size=10,
+        nx.draw(self.graph, pos=layout, with_labels=True, node_size=200, node_color=node_colors, font_size=8,
                 font_color='black')
+        # Add legend
+        legend_labels = {
+            'Predicted Centers': 'red',
+            'Optimal Centers': 'green',
+            'Nodes in Both Sets': 'orange',
+            'Non Center Nodes': 'skyblue'
+        }
+        handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color, markersize=8) for color in
+                   legend_labels.values()]
+        plt.legend(handles, legend_labels.keys(), loc='upper right',  fontsize='small')
+
         plt.title("Graph Visualization")
+        plt.suptitle(figure_title, y=0.045, fontsize=9, fontweight='bold')
         plt.show()

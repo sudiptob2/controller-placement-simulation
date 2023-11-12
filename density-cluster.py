@@ -58,9 +58,6 @@ class DensityCluster(GraphMixin):
 
             if delta[s] > delta_avg:
                 k += 1
-        print("Switch No.\t\tP\tδ")
-        for s in S:
-            print(f"{s + 1}\t\t\t\t{p[s]}\t{delta[s]}")
 
         self.delta = delta
         self.p = p
@@ -114,13 +111,58 @@ class DensityCluster(GraphMixin):
 
 
 if __name__ == '__main__':
-    density_cluster = DensityCluster("network2.txt")
+    graph_raw = ['network1.txt', 'network2.txt']
+    pre_calculated_optimal_centers = [[6], [1, 11, 15, 22, 30]]
+    number_of_iteration = 1
 
-    diameter = nx.diameter(density_cluster.graph)
-    dc = 0.3 * diameter
-    K = density_cluster.recommended_controller(dc)
-    print("K = ", K)
+    for i in range(len(graph_raw)):
+        file_name = graph_raw[i]
+        density_cluster = DensityCluster(file_name)
 
-    cluster = density_cluster.make_cluster(K)
-    print(cluster)
-    density_cluster.visualize(centers=cluster.keys(), seed=21)
+        diameter = nx.diameter(density_cluster.graph)
+        dc = 0.3 * diameter
+        k = density_cluster.recommended_controller(dc)
+
+        # this bruteforce is very slow.
+        # I am using the same graph. so I precomputed the optimal centers
+        # uncomment if you are using different graph than network1, network2
+        # optimal_centers = density_cluster.optimal_centers(k=k)
+        optimal_centers = pre_calculated_optimal_centers[i]
+
+        print(f"Density based clustering: Recommended K = {k}, Graph = {file_name}")
+        print("-" * 25)
+        nodes = sorted(density_cluster.graph.nodes)
+        print("{:<8} {:<8} {:<8}".format("Node", "nd", "δ"))
+        print("-" * 25)
+        for v in nodes:
+            print("{:<8} {:<8} {:<8}".format(v, density_cluster.p[v], density_cluster.delta[v]))
+
+        print("\n" + "-" * 75)
+
+        print("Iteration  |  Avg distance  |  Pi                   |  Poptimal")
+        print("-" * 75)
+        cluster = density_cluster.make_cluster(k=k)
+        # uncomment following line for visualization
+        density_cluster.visualize(centers=cluster.keys(), optimal_centers=optimal_centers, figure_title=f"Netowrk:{file_name} Algorithm: Density based clustering")
+        avg_distance = density_cluster.avg_distance_from_optimal_center(centers=cluster.keys(), optimal_centers=optimal_centers)
+        print(f"{i+1:<11}|  {avg_distance:<14}|  {str(list(cluster.keys())):<20}|  {optimal_centers}")
+
+        print("\n" + "-" * 75)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
