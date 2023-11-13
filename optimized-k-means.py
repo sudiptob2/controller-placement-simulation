@@ -66,11 +66,14 @@ if __name__ == '__main__':
         print(f"Optimized K means: K = {k}, Graph = {file_name}")
         print("Iteration  |  Avg distance  |  Pi  |                  Poptimal")
         print("-" * 75)
+        avg_avg_distance = 0
         for j in range(number_of_iteration):
             cluster = kmeans.k_means_optimized(k=k)
             # uncomment following line for visualization
             # kmeans.visualize(centers=cluster.keys(), optimal_centers=optimal_centers)
             avg_distance = kmeans.avg_distance_from_optimal_center(centers=cluster.keys(), optimal_centers=optimal_centers)
+            avg_avg_distance += avg_distance
             print(f"{j:<11}|  {avg_distance:<14}|  {str(list(cluster.keys())):<20}|  {optimal_centers}")
-
+        avg_avg_distance /= number_of_iteration
+        print("Average(Avg Distance)) = ", avg_avg_distance)
         print("\n" + "-" * 75)

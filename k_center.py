@@ -39,14 +39,39 @@ class KCenter(GraphMixin):
             else:
                 # could not find k center which cover all nodes under the max_distance
                 max_distance += 1
-        print("Centers: ", *list(center_nodes))
-        print("Maximum distance from center to any node: ", self.maximum_distance_from_centers(list(center_nodes)))
         return final_result
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    kc = KCenter("network1.txt")
-    centers = kc.k_centers(k=4)
-    optimal_centers = kc.optimal_centers(k=4)
-    kc.visualize(centers=centers, optimal_centers=optimal_centers)
+
+    graph_raw = ['network1.txt', 'network2.txt']
+    k = 5
+    pre_calculated_optimal_centers = [[3, 11, 13, 20, 26], [1, 11, 15, 22, 30]]
+    number_of_iteration = 10
+    for i in range(len(graph_raw)):
+        file_name = graph_raw[i]
+        kcenter = KCenter(file_name)
+        # this bruteforce is very slow.
+        # I am using the same graph. so I precomputed the optimal centers
+        # uncomment if you are using different graph than network1, network2
+        # optimal_centers = kmeans.optimal_centers(k=k)
+
+        optimal_centers = pre_calculated_optimal_centers[i]
+        print(f"Optimized K means: K = {k}, Graph = {file_name}")
+        print("Iteration  |  Avg distance  |  Pi  |                  Poptimal")
+        print("-" * 75)
+        avg_avg_distance = 0
+        for j in range(number_of_iteration):
+            centers = kcenter.k_centers(k=k)
+            # uncomment following line for visualization
+            # kcenter.visualize(centers=centers, optimal_centers=optimal_centers)
+            avg_distance = kcenter.avg_distance_from_optimal_center(centers=centers,
+                                                                   optimal_centers=optimal_centers)
+            avg_avg_distance += avg_distance
+            print(f"{j:<11}|  {avg_distance:<14}|  {str(list(centers)):<20}|  {optimal_centers}")
+
+        avg_avg_distance /= number_of_iteration
+        print("Average(Avg Distance)) = ", avg_avg_distance)
+
+        print("\n" + "-" * 75)
